@@ -1,3 +1,4 @@
+using PopcornScale.Api.Mapping;
 using PopcornScale.Application;
 using PopcornScale.Application.Database;
 
@@ -20,9 +21,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
+app.UseMiddleware<ValidationMappingMiddleware>();
 app.MapControllers();
 
 var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
