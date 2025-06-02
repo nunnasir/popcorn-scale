@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PopcornScale.Application.Database;
 using PopcornScale.Application.Repositories;
+using PopcornScale.Application.Services;
 
 namespace PopcornScale.Application;
 
@@ -9,6 +10,8 @@ public static class ApplicationServiceCollectionExtensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddSingleton<IMovieRepository, MovieRepository>();
+        services.AddSingleton<IMovieService, MovieService>();
+
         return services;
     }
 
