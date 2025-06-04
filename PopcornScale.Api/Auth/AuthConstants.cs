@@ -1,4 +1,4 @@
-﻿namespace PopcornScale.Api;
+﻿namespace PopcornScale.Api.Auth;
 
 public static class AuthConstants
 {
