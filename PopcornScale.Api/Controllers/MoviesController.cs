@@ -6,7 +6,6 @@ using PopcornScale.Contracts.Requests;
 
 namespace PopcornScale.Api.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("")]
 public class MoviesController : ControllerBase
@@ -18,6 +17,7 @@ public class MoviesController : ControllerBase
         _movieService = movieService;
     }
 
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPost(ApiEndPoints.Movies.Create)]
     public async Task<IActionResult> Create(
         [FromBody] CreateMovieRequest request, 
@@ -30,7 +30,6 @@ public class MoviesController : ControllerBase
         return CreatedAtAction(nameof(Get), new { idOrSlug = movieResponse.Id }, movieResponse);
     }
 
-    [AllowAnonymous]
     [HttpGet(ApiEndPoints.Movies.Get)]
     public async Task<IActionResult> Get(
         [FromRoute] string idOrSlug, 
@@ -49,7 +48,6 @@ public class MoviesController : ControllerBase
         return Ok(response);
     }
 
-    [AllowAnonymous]
     [HttpGet(ApiEndPoints.Movies.GetAll)]
     public async Task<IActionResult> GetAll(CancellationToken token)
     {
@@ -59,6 +57,7 @@ public class MoviesController : ControllerBase
         return Ok(response);
     }
 
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPut(ApiEndPoints.Movies.Update)]
     public async Task<IActionResult> Update(
         [FromRoute] Guid id, 
@@ -77,6 +76,7 @@ public class MoviesController : ControllerBase
         return Ok(response);
     }
 
+    [Authorize(AuthConstants.AdminUserPolicyName)]
     [HttpDelete(ApiEndPoints.Movies.Delete)]
     public async Task<IActionResult> Delete(
         [FromRoute] Guid id, 
