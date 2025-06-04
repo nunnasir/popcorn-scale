@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using PopcornScale.Application.Models;
 using PopcornScale.Application.Repositories;
 
 namespace PopcornScale.Application.Services;
@@ -19,6 +20,11 @@ public class RatingService : IRatingService
     public async Task<bool> DeleteRatingAsync(Guid movieId, Guid userId, CancellationToken token = default)
     {
         return await _ratingRepository.DeleteRatingAsync(movieId, userId, token);
+    }
+
+    public async Task<IEnumerable<MovieRating>> GetRatingsForUserAsync(Guid userId, CancellationToken token = default)
+    {
+        return await _ratingRepository.GetRatingsForUserAsync(userId, token);
     }
 
     public async Task<bool> RateMovieAsync(Guid movieId, int rating, Guid useId, CancellationToken token = default)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PopcornScale.Api.Auth;
+using PopcornScale.Api.Mapping;
 using PopcornScale.Application.Services;
 using PopcornScale.Contracts.Requests;
 
@@ -36,5 +37,16 @@ public class RatingsController : ControllerBase
         var result = await _ratingService.DeleteRatingAsync(id, userId!.Value, token);
 
         return result ? Ok() : NotFound();
+    }
+
+    [Authorize]
+    [HttpGet(ApiEndPoints.Ratings.GetUserRatings)]
+    public async Task<IActionResult> GetUserRatings(CancellationToken token)
+    {
+        var userId = HttpContext.GetUserId();
+        var ratings = await _ratingService.GetRatingsForUserAsync(userId!.Value, token);
+        var ratingResponse = ratings.MapToResponse();
+
+        return Ok(ratingResponse);
     }
 }

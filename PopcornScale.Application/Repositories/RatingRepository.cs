@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using PopcornScale.Application.Database;
+using PopcornScale.Application.Models;
 
 namespace PopcornScale.Application.Repositories;
 
@@ -47,6 +48,17 @@ public class RatingRepository : IRatingRepository
             from ratings
             where movieid = @movieId
             """, new { movieId, userId }, cancellationToken: token));
+    }
+
+    public async Task<IEnumerable<MovieRating>> GetRatingsForUserAsync(Guid userId, CancellationToken token = default)
+    {
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
+        return await connection.QueryAsync<MovieRating>(new CommandDefinition("""
+            select r.rating, r.movieid, m.slug
+            from ratings r
+            inner join movies m on r.movieid = m.id
+            where userid = @userId
+            """, new { userId }, cancellationToken: token));
     }
 
     public async Task<bool> RateMovieAsync(Guid movieId, int rating, Guid useId, CancellationToken token = default)
