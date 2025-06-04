@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PopcornScale.Api.Mapping;
 using PopcornScale.Application.Services;
 using PopcornScale.Contracts.Requests;
 
 namespace PopcornScale.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("")]
 public class MoviesController : ControllerBase
@@ -28,6 +30,7 @@ public class MoviesController : ControllerBase
         return CreatedAtAction(nameof(Get), new { idOrSlug = movieResponse.Id }, movieResponse);
     }
 
+    [AllowAnonymous]
     [HttpGet(ApiEndPoints.Movies.Get)]
     public async Task<IActionResult> Get(
         [FromRoute] string idOrSlug, 
@@ -46,6 +49,7 @@ public class MoviesController : ControllerBase
         return Ok(response);
     }
 
+    [AllowAnonymous]
     [HttpGet(ApiEndPoints.Movies.GetAll)]
     public async Task<IActionResult> GetAll(CancellationToken token)
     {
