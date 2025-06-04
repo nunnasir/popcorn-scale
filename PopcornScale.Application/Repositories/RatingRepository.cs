@@ -12,6 +12,18 @@ public class RatingRepository : IRatingRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
+    public async Task<bool> DeleteRatingAsync(Guid movieId, Guid userId, CancellationToken token = default)
+    {
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
+        var result = await connection.ExecuteAsync(new CommandDefinition("""
+            delete from ratings
+            where movieid = @movieId
+            and userid = @userId
+            """, new { movieId, userId }, cancellationToken: token));
+
+        return result > 0;
+    }
+
     public async Task<float?> GetRatingAsync(Guid movieId, CancellationToken token = default)
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
