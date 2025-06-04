@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PopcornScale.Api.Mapping;
 using PopcornScale.Application.Services;
 using PopcornScale.Contracts.Requests;
@@ -16,6 +17,7 @@ public class MoviesController : ControllerBase
         _movieService = movieService;
     }
 
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPost(ApiEndPoints.Movies.Create)]
     public async Task<IActionResult> Create(
         [FromBody] CreateMovieRequest request, 
@@ -55,6 +57,7 @@ public class MoviesController : ControllerBase
         return Ok(response);
     }
 
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPut(ApiEndPoints.Movies.Update)]
     public async Task<IActionResult> Update(
         [FromRoute] Guid id, 
@@ -73,6 +76,7 @@ public class MoviesController : ControllerBase
         return Ok(response);
     }
 
+    [Authorize(AuthConstants.AdminUserPolicyName)]
     [HttpDelete(ApiEndPoints.Movies.Delete)]
     public async Task<IActionResult> Delete(
         [FromRoute] Guid id, 
