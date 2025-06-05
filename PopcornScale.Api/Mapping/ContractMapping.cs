@@ -35,6 +35,8 @@ public static class ContractMapping
             Id = movie.Id,
             Title = movie.Title,
             Slug = movie.Slug,
+            Rating = movie.Rating,
+            UserRating = movie.UserRating,
             YearOfRelease = movie.YearOfRelease,
             Genres = movie.Genres.ToList(),
         };
@@ -46,5 +48,15 @@ public static class ContractMapping
         {
             Items = movies.Select(MapToResponse)
         };
+    }
+
+    public static IEnumerable<MovieRatingResponse> MapToResponse(this IEnumerable<MovieRating> ratings)
+    {
+        return ratings.Select(x => new MovieRatingResponse
+        {
+            Rating = x.Rating,
+            MovieId = x.MovieId,
+            Slug = x.Slug,
+        });
     }
 }

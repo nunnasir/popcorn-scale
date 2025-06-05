@@ -4,7 +4,7 @@ using PopcornScale.Application;
 using PopcornScale.Application.Database;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using PopcornScale.Api;
+using PopcornScale.Api.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
