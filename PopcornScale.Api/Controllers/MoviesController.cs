@@ -33,7 +33,8 @@ public class MoviesController : ControllerBase
 
     [HttpGet(ApiEndPoints.Movies.Get)]
     public async Task<IActionResult> Get(
-        [FromRoute] string idOrSlug, 
+        [FromRoute] string idOrSlug,
+        [FromServices] LinkGenerator linkGenerator,
         CancellationToken token)
     {
         var userId = HttpContext.GetUserId();
@@ -48,6 +49,14 @@ public class MoviesController : ControllerBase
         }
 
         var response = movie.MapToResponse();
+
+        response.Links.Add(new Contracts.Responses.Link
+        {
+            Href = linkGenerator.GetPathByAction(HttpContext, nameof(Delete), values: new { id = movie.Id })!,
+            Rel = "self",
+            Type = "DELETE"
+        });
+
         return Ok(response);
     }
 
